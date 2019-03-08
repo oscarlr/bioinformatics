@@ -3,7 +3,7 @@ code for ig projects
 
 [Fosmid related code](#fosmid-related-code)  
 
-# Fosmid related coded
+# Fosmid related code
 ### merge_seq_based_on_align_input.py 
 ```
 python python/merge_seq_based_on_align_input.py <alignment_file> <fasta file with fosmid seq>
