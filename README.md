@@ -1,5 +1,4 @@
-# ig
-## code for ig projects
+# ig - code for ig projects
 
 [Fosmid related code](#fosmid-related-code)  
 
