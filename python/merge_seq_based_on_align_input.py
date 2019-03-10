@@ -3,23 +3,24 @@ import sys
 import pysam
 from collections import namedtuple
 
-Alignment = namedtuple(
-    'seq1',
-    'seq2',
-    'alignment_length',
-    'perc_match',
-    'mismatches',
-    'num_gap_openings',
-    'gap_length',
-    'seq1_start',
-    'seq1_end',
-    'seq1_length',
-    'seq2_start',
-    'seq2_end',
-    'seq2_length',
-    'skip',
-    'use',
-    'new_name')
+columns =  ['seq1',
+            'seq2',
+            'alignment_length',
+            'perc_match',
+            'mismatches',
+            'num_gap_openings',
+            'gap_length',
+            'seq1_start',
+            'seq1_end',
+            'seq1_length',
+            'seq2_start',
+            'seq2_end',
+            'seq2_length',
+            'skip',
+            'use',
+            'new_name']
+
+Alignment = namedtuple("Alignment",columns)
 
 def get_alignments(input_file):
     alignments = []
@@ -27,8 +28,13 @@ def get_alignments(input_file):
         header = input_fh.readline()
         for line in input_fh:
             line = line.rstrip().split('\t')
+            int_indices = [7,8,9,10,11,12]
+            for index in int_indices:
+                if line[index] == ".":
+                    continue
+                line[index] = int(line[index])
             alignment = Alignment._make(line)
-            alignments.append(alignment)
+            alignments.append(alignment)   
     return alignments
 
 def read_sequences(input_fasta):
