@@ -29,12 +29,9 @@ then
     rm -f ${threads} ${outdir}/reads_to_backbone.bam
 fi
 
-if [ ! -s ${outdir}/reads.fasta ]
-then
-    cat ${outdir}/reads_to_backbone.unaligned.fasta > ${outdir}/reads.fasta
-    python ${ig_github}/python/remove_backbone.py \
-	${outdir}/reads_to_backbone.sorted.bam >> ${outdir}/reads.fasta
-fi
+cat ${outdir}/reads_to_backbone.unaligned.fasta > ${outdir}/reads.fasta
+python ${ig_github}/python/remove_backbone.py \
+    ${outdir}/reads_to_backbone.sorted.bam >> ${outdir}/reads.fasta
 
 if [ ! -s ${outdir}/assembly_without_backbone/canu.contigs.fasta ]
 then
