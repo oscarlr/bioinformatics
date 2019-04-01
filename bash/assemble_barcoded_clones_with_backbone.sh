@@ -26,7 +26,7 @@ then
     canu \
         -d ${outdir}/assembly_with_backbone \
         -p canu \
-	corOutCoverage=1000 \
+	corOutCoverage=200 \
         minThreads=${threads} \
         useGrid=false \
         genomeSize=${genomesize} \
@@ -37,7 +37,7 @@ fi
 if [ ! -s ${outdir}/assembly_with_backbone/canu.contigs.quivered.fastq ]
 then
     blasr \
-        ${bam_file} \
+        ${bamfile} \
         ${outdir}/assembly_with_backbone/canu.contigs.fasta \
         --bestn 1 \
         --bam \
