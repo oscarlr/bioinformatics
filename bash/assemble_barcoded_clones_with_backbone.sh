@@ -31,7 +31,7 @@ then
         useGrid=false \
         genomeSize=${genomesize} \
         gnuplotTested=true \
-        -pacbio-raw ${outdir}/assembly_with_backbone/reads.fasta
+        -pacbio-raw ${outdir}/reads.fasta
 fi
 
 if [ ! -s ${outdir}/assembly_with_backbone/canu.contigs.quivered.fastq ]
