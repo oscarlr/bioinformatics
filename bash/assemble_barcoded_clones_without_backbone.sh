@@ -1,3 +1,4 @@
+
 #!/bin/bash
 set -x -e
 
@@ -5,7 +6,6 @@ outdir=$1
 bamfile=$2
 genomesize=$3
 backbone=$4
-name=$5
 
 threads=20
 
