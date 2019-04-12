@@ -41,23 +41,26 @@ number_of_het_errors = 0
 number_of_hom = 0
 number_of_hom_errors = 0
 for pos in son_genotype:
-    if pos not in parent1_genotype:
-        continue
-    if pos not in parent2_genotype:
-        continue    
+    s_genotype = son_genotype[pos]
+    p1_genotype = "." 
+    p2_genotype = "." 
+    if pos in parent1_genotype:
+        p1_genotype = parent1_genotype[pos]
+    if pos in parent2_genotype:
+        p2_genotype = parent2_genotype[pos]
     if son_genotype[pos] == "0/1":
         number_of_het += 1.0        
     if son_genotype[pos] == "1/1":
         number_of_hom += 1.0      
-    if is_error(son_genotype[pos],parent1_genotype[pos],parent2_genotype[pos]):
+    if is_error(s_genotype,p1_genotype,p2_genotype):
         print "error: %s" % pos
-        if son_genotype[pos] == "0/1":
+        if s_genotype == "0/1":
             number_of_het_errors += 1.0
-        if son_genotype[pos] == "1/1":
+        if s_genotype == "1/1":
             number_of_hom_errors += 1.0
 
-print number_of_het
-print number_of_hom
-print number_of_het_errors/number_of_het
-print number_of_hom_errors/number_of_hom
+print "number_of_het: ", number_of_het
+print "number_of_hom: ", number_of_hom
+print "Het acc:", 1 - (number_of_het_errors/number_of_het)
+print "Hom acc:", 1 - (number_of_hom_errors/number_of_hom)
 
