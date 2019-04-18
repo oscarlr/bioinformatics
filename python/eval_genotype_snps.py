@@ -54,8 +54,8 @@ def phase_read(read,phased_snps,chrom):
 
 agreements_per_snp = {}
 phased_snps = read_phased_snps(sys.argv[1],sys.argv[2])
-unphased_bam = pysam.AlignmentFile(sys.argv[3],'rb')
-for read in unphased_bam.fetch("igh",1,1179808):
+phased_bam = pysam.AlignmentFile(sys.argv[3],'rb')
+for read in phased_bam.fetch("igh",1,1179808):
     if read.is_secondary:
         continue
     if read.is_unmapped:
