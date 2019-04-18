@@ -64,6 +64,6 @@ for read in phased_bam.fetch("igh",1,1179808):
         continue
     if read.is_secondary:
         continue
-    phase_read(read,phased_snps,unphased_bam.get_reference_name(read.reference_id))
+    phase_read(read,phased_snps,phased_bam.get_reference_name(read.reference_id))
 
 
