@@ -99,12 +99,12 @@ def get_reads_outside_coords(alignment,path):
 reads_per_fosmid = get_reads_per_fosmid(alignment,tiling_path)
 read_outside_coords,total_reads = get_reads_outside_coords(alignment,tiling_path)
 
-out_fosmids = []
-for fosmids in fosmids_that_overlap:
-    for fosmid in fosmids:
-        if fosmid not in out_fosmids:            
-            print "overlap\t%s" % fosmid
-            out_fosmids.append(fosmid)
+# out_fosmids = []
+# for fosmids in fosmids_that_overlap:
+#     for fosmid in fosmids:
+#         if fosmid not in out_fosmids:            
+#             print "overlap\t%s" % fosmid
+#             out_fosmids.append(fosmid)
 
 for fosmid in reads_per_fosmid:
     print "Number_of_reads\t%s\t%s\t%s" % (fosmid,reads_per_fosmid[fosmid][0],reads_per_fosmid[fosmid][1])
