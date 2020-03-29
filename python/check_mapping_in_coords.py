@@ -14,7 +14,7 @@ def read_path(path):
             start = int(line[1])
             end = int(line[2])
             fosmid_name = line[3]
-            fosmids[fosmid_name] = [start,end]
+            fosmids[fosmid_name] = [chrom,start,end]
     return fosmids
 
 def is_overlap(a, b):
@@ -23,18 +23,18 @@ def is_overlap(a, b):
         return False
     return True
 
-def overlapping_fosmids(path):
-    fosmids_that_overlap = []
-    fosmids = read_path(path)
-    for fosmid_1 in fosmids:
-        for fosmid_2 in fosmids:
-            if fosmid_1 == fosmid_2:
-                continue
-            if is_overlap(fosmids[fosmid_1],fosmids[fosmid_2]):
-                if sorted([fosmid_1,fosmid_2]) in fosmids_that_overlap:
-                    continue
-                fosmids_that_overlap.append(sorted([fosmid_1,fosmid_2]))                                            
-    return fosmids_that_overlap
+# def overlapping_fosmids(path):
+#     fosmids_that_overlap = []
+#     fosmids = read_path(path)
+#     for fosmid_1 in fosmids:
+#         for fosmid_2 in fosmids:
+#             if fosmid_1 == fosmid_2:
+#                 continue
+#             if is_overlap(fosmids[fosmid_1],fosmids[fosmid_2]):
+#                 if sorted([fosmid_1,fosmid_2]) in fosmids_that_overlap:
+#                     continue
+#                 fosmids_that_overlap.append(sorted([fosmid_1,fosmid_2]))                                            
+#     return fosmids_that_overlap
 
 def read_completely_span(read,start,end):
     flank = 500
@@ -47,13 +47,13 @@ def get_number_of_reads(alignment,coord):
     samfile = pysam.AlignmentFile(alignment)
     number_of_reads = 0
     number_overlapping = 0
-    for read in samfile.fetch("chr14",coord[0],coord[1]):
+    for read in samfile.fetch(coord[0],coord[1],coord[2]):
         if not use_read(read):
             continue
-        if read_completely_span(read,coord[0],coord[1]):
+        if read_completely_span(read,coord[1],coord[2]):
             number_of_reads += 1
         else:
-            if is_overlap([read.reference_start,read.reference_end],[coord[0],coord[1]]):
+            if is_overlap([read.reference_start,read.reference_end],[coord[1],coord[2]]):
                 number_overlapping += 1
     return number_of_reads, number_overlapping
 
@@ -85,7 +85,7 @@ def get_reads_outside_coords(alignment,path):
         total_reads += 1
         read_span = False
         for fosmid in fosmids:
-            if read_completely_span(read,fosmids[fosmid][0],fosmids[fosmid][1]):                
+            if read_completely_span(read,fosmids[fosmid][1],fosmids[fosmid][2]):                
                 read_span = True
                 break
         if read_span:
@@ -93,7 +93,9 @@ def get_reads_outside_coords(alignment,path):
         read_outside_coords += 1
     return (read_outside_coords,total_reads)
 
-fosmids_that_overlap = overlapping_fosmids(tiling_path)
+#fosmids = read_path(path)
+
+#fosmids_that_overlap = overlapping_fosmids(tiling_path)
 reads_per_fosmid = get_reads_per_fosmid(alignment,tiling_path)
 read_outside_coords,total_reads = get_reads_outside_coords(alignment,tiling_path)
 
