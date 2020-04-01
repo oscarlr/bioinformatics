@@ -9,3 +9,7 @@
 
 ### Get regions (bed file) with coverage
 `python/get_pos_with_bases.py <bam file> > <bed file>`
+
+### Calculate true positive, false positeve rate, and number of false positive and true negative SNVs
+#### LENGTH is the amount of bases compared. For example, LENGTH is the number of bases that overlap between two assemblies.
+`python/compare_test_vcf_to_true_vcf.py <true VCF> <test VCF> <LENGTH>`
