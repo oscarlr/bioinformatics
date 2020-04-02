@@ -22,3 +22,12 @@
 
 ### Get mapping coordinates of bam entries
 `python/mapping_coords.py <bam file> > <bed file>`
+
+
+## bash scripts
+
+### Create bam file with BLASR
+`bash/mapping.sh <reads fasta file> <ref fasta file> <threads> <prefix> <n>`
+
+### Assemble fosmids
+`bash/assemble_fosmids.sh <dir> <subreads bam> <chrom> <start> <end> <fosmid name> <subreads_to_ref bam file>`
