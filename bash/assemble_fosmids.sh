@@ -12,43 +12,60 @@ alignment=$7
 threads=1
 memory=8
 
-SCRIPT=$(readlink -f "$0" )
+
+SCRIPT=$(readlink -f "$0")
 SCRIPTPATH=$(dirname $(dirname "$SCRIPT"))
 
-mkdir -p ${scratch}/${sample} 
-
-if [ ! -s ${scratch}/${sample}/canu/canu.contigs.fasta  ]
+if [ ! -s ${scratch}/reads_to_ref.sorted.bam.bai ]
 then
+    blasr \
+	${bamfile} \
+	${ref} \
+	--bestn 1 \
+	--bam \
+	--nproc ${threads} \
+	--out ${scratch}/reads_to_ref.bam
+    
+    samtools \
+	sort -@ ${threads} \
+	${scratch}/reads_to_ref.bam \
+	-o ${scratch}/reads_to_ref.sorted.bam
+    
+    samtools index ${scratch}/reads_to_ref.sorted.bam
+
+    rm -f ${scratch}/reads_to_ref.bam
+fi
+
+cat ${bedfile} | while read chrom start end sample
+do
+    mkdir -p ${scratch}/${sample} 
+    
     python ${SCRIPTPATH}/python/extract_reads_from_region.py \
-	${alignment} \
-	${chrom} \
-	${start} \
-	${end} > ${scratch}/${sample}/reads.fasta
+	${scratch}/reads_to_ref.sorted.bam \
+        ${chrom} \
+        ${start} \
+        ${end} > ${scratch}/${sample}/reads.fasta
     
     samtools faidx ${scratch}/${sample}/reads.fasta
     
     # assemble fosmids
-        
     canu \
-	-d ${scratch}/${sample}/canu \
-	-p canu \
-	minThreads=${threads} \
-	minMemory=${memory} \
-	useGrid=0 \
-	stopOnLowCoverage=0 \
-	genomeSize=50000 \
+        -d ${scratch}/${sample}/canu \
+        -p canu \
+        minThreads=${threads} \
+        minMemory=${memory} \
+        useGrid=false \
+        genomeSize=50000 \
+        gnuplotTested=true \
 	-pacbio-raw ${scratch}/${sample}/reads.fasta
-fi
-
-if [ ! -s ${scratch}/${sample}/canu/canu.contigs.fasta ]
-then
-    continue
-fi
-
-if [ ! -s ${scratch}/${sample}/canu/canu.contigs.quiver.fastq ]
-then
-    samtools faidx ${scratch}/${sample}/canu/canu.contigs.fasta
     
+    if [ ! -s ${scratch}/${sample}/canu/canu.contigs.fasta ]
+    then
+	continue
+    fi
+    
+    samtools faidx ${scratch}/${sample}/canu.contigs.fasta
+ 
     cut -f1 ${scratch}/${sample}/reads.fasta.fai | sort | uniq > ${scratch}/${sample}/reads.names
     
     python ${SCRIPTPATH}/python/extract_reads.py \
@@ -63,17 +80,12 @@ then
 	--bam \
 	--nproc ${threads} \
 	--out ${scratch}/${sample}/canu/reads_to_canu_contigs.bam
-    
+
     samtools \
 	sort -@ ${threads} \
 	${scratch}/${sample}/canu/reads_to_canu_contigs.bam \
 	-o ${scratch}/${sample}/canu/reads_to_canu_contigs.sorted.bam
 
-    samtools index ${scratch}/${sample}/canu/reads_to_canu_contigs.sorted.bam
-    
-    rm -f ${scratch}/${sample}/canu/reads_to_canu_contigs.bam
-    
-    pbindex ${scratch}/${sample}/canu/reads_to_canu_contigs.sorted.bam
     
     quiver \
 	--referenceFilename ${scratch}/${sample}/canu/canu.contigs.fasta \

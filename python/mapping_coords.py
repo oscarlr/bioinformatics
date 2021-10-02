@@ -5,6 +5,7 @@ import pysam
 samfile = pysam.AlignmentFile(sys.argv[1])
 
 for read in samfile:
+
     if read.is_unmapped:
         continue
     if read.is_supplementary:
@@ -15,4 +16,5 @@ for read in samfile:
     start = read.reference_start
     end = read.reference_end
     out = [ref,start,end,read.query_name]
+
     print "%s" % "\t".join(map(str,out))
