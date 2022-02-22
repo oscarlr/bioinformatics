@@ -21,7 +21,6 @@ optional arguments:
   -h, --help          show this help message and exit
   --species SPECIES   Species. Must be an IMGT option
   --locus LOCUS       Receptor or Locus type. Must be an IMGT option
-(tools_py3) [o0rodr03@bigdata python]$
 ```
 
 
