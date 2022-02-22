@@ -1,6 +1,30 @@
 # bioinformatics
 ## python scripts
 
+### Parse IGenotyper alleles using IMGT V-Quest
+```
+python validate_allele_calls.py -h
+usage: validate_allele_calls.py [-h] [--species SPECIES] [--locus LOCUS]
+                                assembly_genes ccs_genes samples_fofn
+                                airr_vquest_output
+
+Process IGenotyper alleles
+
+positional arguments:
+  assembly_genes      assembly_genes.fasta IGenotyper output
+  ccs_genes           ccs_genes.fasta IGenotyper output
+  samples_fofn        A single column file with file paths of
+                      assemble_genes.fasta for other samples
+  airr_vquest_output  AIRR IMGT v-quest output file
+
+optional arguments:
+  -h, --help          show this help message and exit
+  --species SPECIES   Species. Must be an IMGT option
+  --locus LOCUS       Receptor or Locus type. Must be an IMGT option
+(tools_py3) [o0rodr03@bigdata python]$
+```
+
+
 ### Get sequence (fasta file) from bam file for each bed entry
 `python/extract_sequence_from_bam.py <bed file> <bam file> > <fasta file>`
 
