@@ -19,11 +19,11 @@ blastn \
   blast.txt
  
 # blast.txt is the output from the blast output
-# blast_edited.txt is the blast
-# seqs_groups.txt are a txt file with fosmids that belong together
-# seqs_to_ignore.txt are a txt file with fosmids that should be ignored
-# seqs_to_merge.txt are a txt file with fosmids that are being merged
-# seqs.fasta is the input fasta
+# blast_edited.txt is the blast output used for merging
+# seqs_groups.txt is a txt file with seqs that belong together
+# seqs_to_ignore.txt is a txt file with seqs that should be ignored
+# seqs_to_merge.txt is a txt file with seqs that are being merged
+# seqs.fasta is the input fasta used for BLAST
 # merged_seqs.fasta is the output fasta
 # 5000 the minimum number of bases to overlap
 # 1 is the maximum allowed errors
