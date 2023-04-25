@@ -13,8 +13,8 @@ The sequences selected to be be merged can be evaluated using add_read_group.py
 # fosmids.fasta has all the fosmids sequence to be merged
 module load blast/2.7.1+
 blastn \
-  -query seqs.fasta \
-  -subject seqs.fasta \
+  -query test/seqs.fasta \
+  -subject test/seqs.fasta \
   -outfmt "6 length pident nident mismatch gapopen gaps qseqid qstart qend qlen sseqid sstart send slen sstrand" > \
   blast.txt
  
@@ -33,9 +33,9 @@ python Fosmids/python/merge_fosmids.py
   seqs_groups.txt \
   seqs_to_ignore.txt \
   seqs_to_merge.txt \
-  seqs.fasta \
+  test/seqs.fasta \
   merged_seqs.fasta \
-  5000 \
+  300 \
   1
  
 # seqs_to_ref.sorted.bam is the bam file with the fosmids aligned
