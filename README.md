@@ -9,7 +9,7 @@ The steps are:
 
 The sequences selected to be be merged can be evaluated using add_read_group.py
 
-
+```
 # fosmids.fasta has all the fosmids sequence to be merged
 module load blast/2.7.1+
 blastn \
@@ -46,7 +46,7 @@ python Fosmids/python/add_read_group.py \
   seqs_to_ref_grouped.sorted.bam \
   seqs_groups.txt
 samtools index seqs_to_ref_grouped.sorted.bam
-
+```
 
 
 ### Parse IGenotyper alleles using IMGT V-Quest
