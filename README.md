@@ -1,5 +1,53 @@
 # bioinformatics
-## python scripts
+## Mergining contigs
+
+This code is useful to merge contigs (generally any sequences). We have used this code to merge contigs, align back to the reference and detect SVs.
+
+The steps are:
+1. Perform a self-alignment using BLAST
+2. Merge the sequences using the BLAST output (merge_fosmids.py)
+
+The sequences selected to be be merged can be evaluated using add_read_group.py
+
+
+# fosmids.fasta has all the fosmids sequence to be merged
+module load blast/2.7.1+
+blastn \
+  -query seqs.fasta \
+  -subject seqs.fasta \
+  -outfmt "6 length pident nident mismatch gapopen gaps qseqid qstart qend qlen sseqid sstart send slen sstrand" > \
+  blast.txt
+ 
+# blast.txt is the output from the blast output
+# blast_edited.txt is the blast
+# seqs_groups.txt are a txt file with fosmids that belong together
+# seqs_to_ignore.txt are a txt file with fosmids that should be ignored
+# seqs_to_merge.txt are a txt file with fosmids that are being merged
+# seqs.fasta is the input fasta
+# merged_seqs.fasta is the output fasta
+# 5000 the minimum number of bases to overlap
+# 1 is the maximum allowed errors
+python Fosmids/python/merge_fosmids.py 
+  blast.txt \
+  blast_edited.txt \
+  seqs_groups.txt \
+  seqs_to_ignore.txt \
+  seqs_to_merge.txt \
+  seqs.fasta \
+  merged_seqs.fasta \
+  5000 \
+  1
+ 
+# seqs_to_ref.sorted.bam is the bam file with the fosmids aligned
+# seqs_to_ref_grouped.sorted.bam is the bam file with the fosmids that are to be merged
+# seq_groups.txt is the output from above
+python Fosmids/python/add_read_group.py \
+  seqs_to_ref.sorted.bam \
+  seqs_to_ref_grouped.sorted.bam \
+  seqs_groups.txt
+samtools index seqs_to_ref_grouped.sorted.bam
+
+
 
 ### Parse IGenotyper alleles using IMGT V-Quest
 ```
