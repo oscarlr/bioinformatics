@@ -5,7 +5,7 @@ This code is useful to merge contigs (generally any sequences). We have used thi
 
 The steps are:
 1. Perform a self-alignment using BLAST
-2. Merge the sequences using the BLAST output (merge_fosmids.py)
+2. Merge the sequences using the BLAST output (merge_fosmids.py). The two most important tunable parameters are the amount of overlap between sequences and the number of allowable mismatches.
 
 The sequences selected to be be merged can be evaluated using add_read_group.py
 
