@@ -49,7 +49,7 @@ samtools index seqs_to_ref_grouped.sorted.bam
 ```
 
 
-### Parse IGenotyper alleles using IMGT V-Quest
+## Parse IGenotyper alleles using IMGT V-Quest
 ```
 python validate_allele_calls.py -h
 usage: validate_allele_calls.py [-h] [--species SPECIES] [--locus LOCUS]
