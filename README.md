@@ -1,5 +1,5 @@
 # bioinformatics
-## Mergining contigs
+## Merging contigs
 
 This code is useful to merge contigs (generally any sequences). We have used this code to merge contigs, align back to the reference and detect SVs.
 
