@@ -1,5 +1,76 @@
 # bioinformatics
-## python scripts
+## Merging contigs
+
+This code is useful to merge contigs (generally any sequences). We have used this code to merge contigs, align back to the reference and detect SVs.
+
+The steps are:
+1. Perform a self-alignment using BLAST
+2. Merge the sequences using the BLAST output (merge_fosmids.py). The two most important tunable parameters are the amount of overlap between sequences and the number of allowable mismatches.
+
+The sequences selected to be be merged can be evaluated using add_read_group.py
+
+```
+# fosmids.fasta has all the fosmids sequence to be merged
+module load blast/2.7.1+
+blastn \
+  -query test/seqs.fasta \
+  -subject test/seqs.fasta \
+  -outfmt "6 length pident nident mismatch gapopen gaps qseqid qstart qend qlen sseqid sstart send slen sstrand" > \
+  blast.txt
+ 
+# blast.txt is the output from the blast output
+# blast_edited.txt is the blast output used for merging
+# seqs_groups.txt is a txt file with seqs that belong together
+# seqs_to_ignore.txt is a txt file with seqs that should be ignored
+# seqs_to_merge.txt is a txt file with seqs that are being merged
+# seqs.fasta is the input fasta used for BLAST
+# merged_seqs.fasta is the output fasta
+# 5000 the minimum number of bases to overlap
+# 1 is the maximum allowed errors
+python Fosmids/python/merge_fosmids.py 
+  blast.txt \
+  blast_edited.txt \
+  seqs_groups.txt \
+  seqs_to_ignore.txt \
+  seqs_to_merge.txt \
+  test/seqs.fasta \
+  merged_seqs.fasta \
+  300 \
+  1
+ 
+# seqs_to_ref.sorted.bam is the bam file with the fosmids aligned
+# seqs_to_ref_grouped.sorted.bam is the bam file with the fosmids that are to be merged
+# seq_groups.txt is the output from above
+python Fosmids/python/add_read_group.py \
+  seqs_to_ref.sorted.bam \
+  seqs_to_ref_grouped.sorted.bam \
+  seqs_groups.txt
+samtools index seqs_to_ref_grouped.sorted.bam
+```
+
+
+## Parse IGenotyper alleles using IMGT V-Quest
+```
+python validate_allele_calls.py -h
+usage: validate_allele_calls.py [-h] [--species SPECIES] [--locus LOCUS]
+                                assembly_genes ccs_genes samples_fofn
+                                airr_vquest_output
+
+Process IGenotyper alleles
+
+positional arguments:
+  assembly_genes      assembly_genes.fasta IGenotyper output
+  ccs_genes           ccs_genes.fasta IGenotyper output
+  samples_fofn        A single column file with file paths of
+                      assemble_genes.fasta for other samples
+  airr_vquest_output  AIRR IMGT v-quest output file
+
+optional arguments:
+  -h, --help          show this help message and exit
+  --species SPECIES   Species. Must be an IMGT option
+  --locus LOCUS       Receptor or Locus type. Must be an IMGT option
+```
+
 
 ### Get sequence (fasta file) from bam file for each bed entry
 `python/extract_sequence_from_bam.py <bed file> <bam file> > <fasta file>`
